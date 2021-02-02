@@ -1,0 +1,24 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "Recipe application",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/monchao/forkify.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/monchao/forkify/issues"
+  },
+  "homepage": "https://github.com/monchao/forkify#readme",
+  "devDependencies": {
+    "parcel": "^2.0.0-nightly.562",
+    "sass": "^1.32.6"
+  }
+}
