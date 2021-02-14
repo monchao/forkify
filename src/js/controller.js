@@ -18,11 +18,11 @@ const timeout = function (s) {
 
 const renderSpinner = function (parentEl) {
   const markup = `
-    <div class = "spinner">
-      <svg>
-        <use href="src/img/icons.svg#icon-loader"></use>
-      </svg>
-    </div>
+  <div class="spinner">
+    <svg>
+      <use href="${icons}#icon-loader"></use>
+    </svg>
+  </div> 
   `;
   parentEl.innerHTML = "";
   parentEl.insertAdjacentHTML("afterbegin", markup);
@@ -31,10 +31,13 @@ const renderSpinner = function (parentEl) {
 const showRecipe = async function () {
   try {
     // 1) Loading recipe
+    renderSpinner(recipeContainer); //FIXME! svg loading need much time, you may not see it if the following data fetching is not slow enough.
+
     const res = await fetch(
       "https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886"
     );
     const data = await res.json();
+    console.log("data fetched!");
 
     if (!res.ok) throw new Error(`${data.status} ( ${res.status})`);
 
@@ -54,7 +57,7 @@ const showRecipe = async function () {
       cookingTime: recipe.cooking_time,
     };
 
-    // Rending recipe
+    // 2) Rending recipe
     const markup = `
         <figure class="recipe__fig">
           <img src= "${recipe.imgUrl}" alt="${
@@ -155,10 +158,12 @@ const showRecipe = async function () {
     `;
 
     recipeContainer.innerHTML = "";
-    recipeContainer.insertAdjacentHTML("afterbegin", markup);
+    recipeContainer.insertAdjacentHTML("beforeend", markup);
   } catch (err) {
     alert(err);
   }
 };
 
 showRecipe();
+
+// renderSpinner(recipeContainer);
