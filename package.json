@@ -20,5 +20,9 @@
   "devDependencies": {
     "parcel": "^2.0.0-nightly.562",
     "sass": "^1.32.6"
+  },
+  "dependencies": {
+    "core-js": "^3.8.3",
+    "regenerator-runtime": "^0.13.7"
   }
 }
