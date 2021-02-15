@@ -33,7 +33,7 @@ const showRecipe = async function () {
   try {
     const id = window.location.hash.slice(1);
     console.log(id);
-
+    if (!id) return;
     // 1) Loading recipe
     renderSpinner(recipeContainer); //FIXME! svg loading need much time, you may not see it if the following data fetching is not slow enough.
 
@@ -169,5 +169,5 @@ const showRecipe = async function () {
   }
 };
 
-// List to hashchange
+// Listen to hashchange
 ["hashchange", "load"].forEach((ev) => window.addEventListener(ev, showRecipe));
