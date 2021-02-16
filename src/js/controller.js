@@ -1,3 +1,5 @@
+import * as model from "./model.js";
+
 // import icons from "../img/icons.svg"; // Parcel 1
 import icons from "url:../img/icons.svg"; // Parcel 2
 import "core-js/stable";
@@ -34,33 +36,12 @@ const showRecipe = async function () {
     const id = window.location.hash.slice(1);
     console.log(id);
     if (!id) return;
-    // 1) Loading recipe
+
     renderSpinner(recipeContainer); //FIXME! svg loading need much time, you may not see it if the following data fetching is not slow enough.
 
-    const res = await fetch(
-      `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
-    );
-    const data = await res.json();
-
-    if (!res.ok) throw new Error(`${data.status} ( ${res.status})`);
-
-    // console.log(res);
-    console.log(data.data);
-
-    let { recipe } = data.data;
-
-    recipe = {
-      id: recipe.id,
-      title: recipe.title,
-      ingredients: recipe.ingredients,
-      imgUrl: recipe.image_url,
-      publisher: recipe.publisher,
-      sourceUrl: recipe.source_url,
-      servings: recipe.servings,
-      cookingTime: recipe.cooking_time,
-    };
-
-    console.log(recipe);
+    // 1) Loading recipe
+    await model.loadRecipe(id);
+    const { recipe } = model.state;
 
     // 2) Rending recipe
     const markup = `
