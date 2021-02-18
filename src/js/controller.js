@@ -25,7 +25,7 @@ const controlRecipes = async function () {
     recipeView.render(model.state.recipe); // ❓ 👌 为何叫 render 与 constructor 有何不同？
     // const recipeView = new recipeView(model.state.recipe) 与上面的等价
   } catch (err) {
-    console.error(err);
+    recipeView.renderError();
   }
 };
 
