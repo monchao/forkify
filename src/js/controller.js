@@ -16,20 +16,21 @@ const controlRecipes = async function () {
     // console.log(id);
     if (!id) return;
 
-    recipeView.renderSpinner(); //FIXME! svg loading need much time, you may not see it if the following data fetching is not slow enough.
+    recipeView.renderSpinner(); // ❗ 👌 svg loading need much time, you may not see it if the following data fetching is not slow enough.
 
     // 1) Loading recipe
     await model.loadRecipe(id);
 
     // 2) Rending recipe
-    recipeView.render(model.state.recipe); // ❓ 👌
+    recipeView.render(model.state.recipe); // ❓ 👌 为何叫 render 与 constructor 有何不同？
     // const recipeView = new recipeView(model.state.recipe) 与上面的等价
   } catch (err) {
-    alert(err);
+    console.error(err);
   }
 };
 
-// Listen to hashchange
-["hashchange", "load"].forEach((ev) =>
-  window.addEventListener(ev, controlRecipes)
-);
+const init = function () {
+  recipeView.addHandlerRender(controlRecipes);
+};
+
+init();
