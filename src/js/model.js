@@ -5,11 +5,15 @@ import { getJSON } from "./helper.js";
 
 export const state = {
   recipe: {},
+  search: {
+    query: "",
+    results: [],
+  },
 };
 
 export const loadRecipe = async function (id) {
   try {
-    const data = await getJSON(`${API_URL}/${id}`);
+    const data = await getJSON(`${API_URL}${id}`);
 
     const { recipe } = data.data;
     state.recipe = {
@@ -28,5 +32,28 @@ export const loadRecipe = async function (id) {
     // Temp error handling
     console.error(`${err} 💥💥💥💥💥💥 `);
     throw err; // NOTE: the flow of Error
+  }
+};
+
+export const loadSearchResults = async function (query) {
+  try {
+    const data = await getJSON(`${API_URL}?search=${query}`);
+    console.log(data);
+    state.search.results = data.data.recipes.map((rec) => {
+      return {
+        id: rec.id,
+        title: rec.title,
+        ingredients: rec.ingredients,
+        imgUrl: rec.image_url,
+        publisher: rec.publisher,
+        sourceUrl: rec.source_url,
+        servings: rec.servings,
+        cookingTime: rec.cooking_time,
+      };
+    });
+    console.log(state.search.results);
+  } catch (err) {
+    console.error(`${err} 💥💥💥💥💥💥 `);
+    throw err;
   }
 };
