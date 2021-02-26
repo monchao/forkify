@@ -47,7 +47,6 @@ export const loadSearchResults = async function (query) {
         cookingTime: rec.cooking_time,
       };
     });
-    console.log(state.search.results);
   } catch (err) {
     console.error(`${err} 💥💥💥💥💥💥 `);
     throw err;
