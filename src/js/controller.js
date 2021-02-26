@@ -1,6 +1,7 @@
 import * as model from "./model.js";
 import recipeView from "./views/recipeView.js";
 import searchView from "./views/searchView.js";
+import resultsView from "./views/resultsView.js";
 
 import "core-js/stable";
 import "regenerator-runtime/runtime";
@@ -12,7 +13,6 @@ import "regenerator-runtime/runtime";
 const controlRecipes = async function () {
   try {
     const id = window.location.hash.slice(1);
-    // console.log(id);
     if (!id) return;
 
     recipeView.renderSpinner(); // ❗ 👌 svg loading need much time, you may not see it if the following data fetching is not slow enough.
@@ -24,12 +24,15 @@ const controlRecipes = async function () {
     recipeView.render(model.state.recipe); // ❓ 👌 为何叫 render 与 constructor 有何不同？
     // const recipeView = new recipeView(model.state.recipe) 与上面的等价
   } catch (err) {
+    console.error(err); // It helps to locate the error ❗
     recipeView.renderError();
   }
 };
 
 const controlSearchResults = async function () {
   try {
+    resultsView.renderSpinner();
+
     // 1) Get search query
     const query = searchView.getQuery();
     if (!query) return;
@@ -39,8 +42,8 @@ const controlSearchResults = async function () {
 
     // 3) Rending results
     console.log(model.state.search.results);
-  } catch (e) {
-    console.log(e);
+  } catch (err) {
+    console.log(err);
   }
 };
 
