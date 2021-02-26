@@ -6,9 +6,10 @@ import resultsView from "./views/resultsView.js";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
-// https://forkify-api.herokuapp.com/v2
-
-///////////////////////////////////////
+// parcel hot module reloading
+if (module.hot) {
+  module.hot.accept();
+}
 
 const controlRecipes = async function () {
   try {
@@ -42,6 +43,7 @@ const controlSearchResults = async function () {
 
     // 3) Rending results
     console.log(model.state.search.results);
+    resultsView.render(model.state.search.results);
   } catch (err) {
     console.log(err);
   }
