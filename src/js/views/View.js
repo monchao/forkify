@@ -15,6 +15,39 @@ export default class View {
     this._parentElement.insertAdjacentHTML("beforeend", markup);
   }
 
+  update(data) {
+    if (!data || (Array.isArray(data) && data.length === 0)) {
+      return this.renderError();
+    }
+
+    this._data = data;
+    const newMarkup = this._generateMarkup();
+
+    const newDOM = document.createRange().createContextualFragment(newMarkup); // ⭐
+    const newElements = newDOM.querySelectorAll("*");
+    const curElements = this._parentElement.querySelectorAll("*");
+
+    newElements.forEach((newEl, i) => {
+      const curEl = curElements[i];
+      // 1) Updates changed TEXT
+      if (
+        !newEl.isEqualNode(curEl) &&
+        newEl.firstChild?.nodeValue.trim() !== "" // ❓❓ ⭐
+      ) {
+        // console.log("💥 💥 " + newEl.firstChild.nodeValue.trim());
+        curEl.textContent = newEl.textContent;
+      }
+
+      // 2) Update changed attributes
+      if (!newEl.isEqualNode(curEl)) {
+        console.log(newEl.attributes);
+        Array.from(newEl.attributes).forEach((attr) =>
+          curEl.setAttribute(attr.name, attr.value)
+        );
+      }
+    });
+  }
+
   _clear() {
     this._parentElement.innerHTML = "";
   }
@@ -59,11 +92,5 @@ export default class View {
     `;
     this._clear();
     this._parentElement.insertAdjacentHTML("afterbegin", markup);
-  }
-
-  addHandlerRender(handler) {
-    ["hashchange", "load"].forEach((ev) =>
-      window.addEventListener(ev, handler)
-    );
   }
 }
