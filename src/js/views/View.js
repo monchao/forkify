@@ -38,9 +38,8 @@ export default class View {
         curEl.textContent = newEl.textContent;
       }
 
-      // 2) Update changed attributes
+      // 2) Update changed ATTRIBUTES
       if (!newEl.isEqualNode(curEl)) {
-        console.log(newEl.attributes);
         Array.from(newEl.attributes).forEach((attr) =>
           curEl.setAttribute(attr.name, attr.value)
         );
