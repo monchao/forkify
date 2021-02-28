@@ -49,6 +49,8 @@ export const loadSearchResults = async function (query) {
         cookingTime: rec.cooking_time,
       };
     });
+    // reset start page of search resultus
+    state.search.page = 1;
   } catch (err) {
     console.error(`${err} 💥💥💥💥💥💥 `);
     throw err;
