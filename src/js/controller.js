@@ -20,6 +20,9 @@ const controlRecipes = async function () {
 
     recipeView.renderSpinner(); // ❗ 👌 svg loading need much time, you may not see it if the following data fetching is not slow enough.
 
+    // 0) Update results view to mark selected search result
+    resultsView.update(model.getSearchResultsPage());
+
     // 1) Loading recipe
     await model.loadRecipe(id);
 
