@@ -14,6 +14,7 @@ import "regenerator-runtime/runtime";
 
 const controlRecipes = async function () {
   try {
+    // Get hash id ⭐
     const id = window.location.hash.slice(1);
     if (!id) return;
 
@@ -23,7 +24,7 @@ const controlRecipes = async function () {
     await model.loadRecipe(id);
 
     // 2) Rending recipe
-    recipeView.render(model.state.recipe); // ❓ 👌 为何叫 render 与 constructor 有何不同？
+    recipeView.render(model.state.recipe); // ❓ 👌 为何叫 render 与 constructor 有何不同? ✅ NOT constructor. A method with special meaning.
     // const recipeView = new recipeView(model.state.recipe) 与上面的等价
   } catch (err) {
     console.error(err); // It helps to locate the error ❗
@@ -52,8 +53,17 @@ const controlSearchResults = async function () {
   }
 };
 
+const controlServings = function (newServings) {
+  // 1) Update the recipe servings (in state)
+  model.updateServings(newServings);
+
+  // 2) Update the recipe view
+  recipeView.update(model.state.recipe);
+};
+
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
+  recipeView.addHandlerUpdateServings(controlServings);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
 };
