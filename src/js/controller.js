@@ -64,13 +64,6 @@ const controlServings = function (newServings) {
   recipeView.update(model.state.recipe);
 };
 
-const init = function () {
-  recipeView.addHandlerRender(controlRecipes);
-  recipeView.addHandlerUpdateServings(controlServings);
-  searchView.addHandlerSearch(controlSearchResults);
-  paginationView.addHandlerClick(controlPagination);
-};
-
 const controlPagination = function (goToPage) {
   console.log("Page controller");
   // Render NEW results
@@ -78,6 +71,20 @@ const controlPagination = function (goToPage) {
 
   // Render NEW pagination
   paginationView.render(model.state.search);
+};
+
+const controlAddBookmark = function () {
+  model.addBookmark(model.state.recipe);
+  console.log(model.state.recipe);
+  recipeView.update(model.state.recipe);
+};
+
+const init = function () {
+  recipeView.addHandlerRender(controlRecipes);
+  recipeView.addHandlerUpdateServings(controlServings);
+  recipeView.addHandlerAddBookmark(controlAddBookmark);
+  searchView.addHandlerSearch(controlSearchResults);
+  paginationView.addHandlerClick(controlPagination);
 };
 
 init();
