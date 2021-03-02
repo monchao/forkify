@@ -23,7 +23,6 @@ export default class View {
 
     this._data = data;
     const newMarkup = this._generateMarkup();
-
     const newDOM = document.createRange().createContextualFragment(newMarkup); // ⭐
     const newElements = newDOM.querySelectorAll("*");
     const curElements = this._parentElement.querySelectorAll("*");
@@ -33,9 +32,9 @@ export default class View {
       // 1) Updates changed TEXT
       if (
         !newEl.isEqualNode(curEl) &&
-        newEl.firstChild?.nodeValue.trim() !== "" // ❓❓ ⭐
+        newEl.firstChild?.nodeValue.trim() !== "" // ❓ ⭐
       ) {
-        // console.log("💥 💥 " + newEl.firstChild.nodeValue.trim());
+        // console.log("💥 💥 " + newEl.firstChild?.nodeValue.trim());
         curEl.textContent = newEl.textContent;
       }
 
