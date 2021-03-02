@@ -13,11 +13,34 @@ export const getJSON = async function (url) {
     const res = await Promise.race([fetch(url), timeout(TIMEOUT_SEC)]);
     const data = await res.json();
 
-    if (!res.ok) throw new Error(`${data.status} ( ${res.status})`);
+    if (!res.ok) throw new Error(`${data.message} ( ${res.status})`); // 🐞 fixed
 
     return data;
   } catch (err) {
     console.log(`${err} 🔔`);
+    throw err;
+  }
+};
+
+// ✅ upload recipe to the API
+export const sendJSON = async function (url, uploadData) {
+  try {
+    const fetchPro = fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(uploadData),
+    });
+
+    const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
+
+    const data = await res.json(); // why send the data back ❓
+
+    if (!res.ok) throw new Error(`${data.message} ${res.status}`); // 🐞 fixed
+    return data;
+  } catch (err) {
+    console.log(`${err} 💥`);
     throw err;
   }
 };
