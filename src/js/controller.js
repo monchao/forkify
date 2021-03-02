@@ -19,17 +19,18 @@ const controlRecipes = async function () {
     const id = window.location.hash.slice(1);
     if (!id) return;
 
-    recipeView.renderSpinner(); // ❗ 👌 svg loading need much time, you may not see it if the following data fetching is not slow enough.
+    recipeView.renderSpinner(); // ❗✅ svg loading need much time, you may not see it if the following data fetching is not slow enough.
 
     // 0) Update results view to mark selected search result
     resultsView.update(model.getSearchResultsPage());
+    // debugger; //  ⭐
     bookmarksView.update(model.state.bookmarks);
 
     // 1) Loading recipe
     await model.loadRecipe(id);
 
     // 2) Rending recipe
-    recipeView.render(model.state.recipe); // ❓ 👌 为何叫 render 与 constructor 有何不同? ✅ NOT constructor. A method with special meaning.
+    recipeView.render(model.state.recipe); // ❓ 为何叫 render 与 constructor 有何不同? ✅ NOT constructor. A method with special meaning.
     // const recipeView = new recipeView(model.state.recipe) 与上面的等价
   } catch (err) {
     console.error(err); // It helps to locate the error ❗
@@ -90,7 +91,12 @@ const controlAddBookmark = function () {
   bookmarksView.render(model.state.bookmarks);
 };
 
+const controlBookmarks = function () {
+  bookmarksView.render(model.state.bookmarks);
+};
+
 const init = function () {
+  bookmarksView.addHandlerBookmarks(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerUpdateServings(controlServings);
   recipeView.addHandlerAddBookmark(controlAddBookmark);
