@@ -54,12 +54,8 @@ export const loadSearchResults = async function (query) {
       return {
         id: recipe.id,
         title: recipe.title,
-        ingredients: recipe.ingredients,
         imgUrl: recipe.image_url,
         publisher: recipe.publisher,
-        sourceUrl: recipe.source_url,
-        servings: recipe.servings,
-        cookingTime: recipe.cooking_time,
       };
     });
     // reset start page of search resultus
