@@ -69,7 +69,6 @@ const controlServings = function (newServings) {
 };
 
 const controlPagination = function (goToPage) {
-  console.log("Page controller");
   // Render NEW results
   resultsView.render(model.getSearchResultsPage(goToPage));
 
