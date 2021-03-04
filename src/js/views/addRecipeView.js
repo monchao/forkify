@@ -36,7 +36,6 @@ class AddRecipeView extends View {
       handler(data);
     });
   }
-  _generateMarkup() {}
 }
 
 export default new AddRecipeView();
