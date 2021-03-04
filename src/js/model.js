@@ -50,16 +50,16 @@ export const loadSearchResults = async function (query) {
   try {
     const data = await getJSON(`${API_URL}?search=${query}`);
     console.log(data);
-    state.search.results = data.data.recipes.map((rec) => {
+    state.search.results = data.data.recipes.map((recipe) => {
       return {
-        id: rec.id,
-        title: rec.title,
-        ingredients: rec.ingredients,
-        imgUrl: rec.image_url,
-        publisher: rec.publisher,
-        sourceUrl: rec.source_url,
-        servings: rec.servings,
-        cookingTime: rec.cooking_time,
+        id: recipe.id,
+        title: recipe.title,
+        ingredients: recipe.ingredients,
+        imgUrl: recipe.image_url,
+        publisher: recipe.publisher,
+        sourceUrl: recipe.source_url,
+        servings: recipe.servings,
+        cookingTime: recipe.cooking_time,
       };
     });
     // reset start page of search resultus
