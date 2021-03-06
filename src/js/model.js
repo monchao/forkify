@@ -1,6 +1,5 @@
 import { API_URL, RES_PER_PAGE, KEY } from "./config.js";
-import { getJSON } from "./helper.js";
-import { sendJSON } from "./helper.js";
+import { AJAX } from "./helper.js";
 
 export const state = {
   recipe: {},
@@ -25,12 +24,13 @@ const createRecipeObject = function (data) {
     sourceUrl: recipe.source_url,
     servings: recipe.servings,
     cookingTime: recipe.cooking_time,
+    ...(recipe.key && { key: recipe.key }), // ⭐ a very handy trick
   };
 };
 
 export const loadRecipe = async function (id) {
   try {
-    const data = await getJSON(`${API_URL}${id}`);
+    const data = await AJAX(`${API_URL}${id}?key=${KEY}`); // ❓ Why use key here
 
     state.recipe = createRecipeObject(data);
 
@@ -48,7 +48,7 @@ export const loadRecipe = async function (id) {
 
 export const loadSearchResults = async function (query) {
   try {
-    const data = await getJSON(`${API_URL}?search=${query}`);
+    const data = await AJAX(`${API_URL}?search=${query}&key=${KEY}`); // Why use key here ❓
     console.log(data);
     state.search.results = data.data.recipes.map((recipe) => {
       return {
@@ -56,6 +56,7 @@ export const loadSearchResults = async function (query) {
         title: recipe.title,
         imgUrl: recipe.image_url,
         publisher: recipe.publisher,
+        ...(recipe.key && { key: recipe.key }),
       };
     });
     // reset start page of search resultus
@@ -127,14 +128,12 @@ export const uploadRecipe = async function (newRecipe) {
     const ingredients = Object.entries(newRecipe)
       .filter((entry) => entry[0].startsWith("ingredient") && entry[1] !== "")
       .map((ing) => {
-        const ingArr = ing[1].replaceAll(" ", "").split(",");
+        const ingArr = ing[1].split(",").map((el) => el.trim()); // 🐞 fixed!
         if (ingArr.length !== 3)
           throw new Error(
             "Wrong ingredient format! Please use the correct format :)"
           );
-        const [quantity, unit, description] = ing[1]
-          .replaceAll(" ", "")
-          .split(",");
+        const [quantity, unit, description] = ingArr;
         return { quantity: quantity ? +quantity : null, unit, description };
       });
 
@@ -148,8 +147,9 @@ export const uploadRecipe = async function (newRecipe) {
       ingredients,
     };
 
-    const data = await sendJSON(`${API_URL}?key=${KEY}`, recipe);
+    const data = await AJAX(`${API_URL}?key=${KEY}`, recipe);
     state.recipe = createRecipeObject(data);
+    // Add the uploaded recipe to bookmarks.
     addBookmark(state.recipe);
   } catch (err) {
     throw err;
