@@ -1,5 +1,5 @@
 import * as model from "./model.js";
-import { MODAL_CLOSE_SEC } from "./config.js";
+import { MODAL_CLOSE_SEC, FORM_REST_SEC } from "./config.js";
 import recipeView from "./views/recipeView.js";
 import searchView from "./views/searchView.js";
 import resultsView from "./views/resultsView.js";
@@ -119,12 +119,14 @@ const controlAddRecipe = async function (newRecipe) {
     window.history.pushState(null, "", `#${model.state.recipe.id}`);
     // window.history.back()
 
-    // Close form window
+    // Close form window automatically after seconds
+    // MZ: The user cannot upload unless reloading the page. 🐞 Reset the default form content. ✅
     setTimeout(function () {
-      addRecipeView.toggleWindow();
+      addRecipeView.isHiddenWindow() ? "" : addRecipeView.toggleWindow(); // 🐞 : User may click the btnClose... ✅
+      setTimeout(function () {
+        addRecipeView.resetForm();
+      }, FORM_REST_SEC * 1000);
     }, MODAL_CLOSE_SEC * 1000);
-
-    // reset the upload window 🐞
   } catch (err) {
     /* handle error */
     console.log("💥", err);
