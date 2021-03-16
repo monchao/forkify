@@ -49,7 +49,6 @@ export const loadRecipe = async function (id) {
 export const loadSearchResults = async function (query) {
   try {
     const data = await AJAX(`${API_URL}?search=${query}&key=${KEY}`); // Why use key here ❓
-    console.log(data);
     state.search.results = data.data.recipes.map((recipe) => {
       return {
         id: recipe.id,
